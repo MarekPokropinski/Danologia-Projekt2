@@ -35,8 +35,8 @@ def get_tweets(hashtag: str, count: int = 0, out_file: str = None):
     return df
 
 
-keyword = 'ryanair'
+# keyword = 'ryanair'
 
-tweets = get_tweets(keyword)
+# tweets = get_tweets(keyword)
 
-tweets.to_csv(f'{keyword}.csv', index=False)
+# tweets.to_csv(f'{keyword}.csv', index=False)

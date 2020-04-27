@@ -2,5 +2,5 @@ tweet-preprocessor
 pandas
 tweepy
 numpy~=1.18.3
-tensorflow>=2.0.0
+tensorflow>=2.0.0a0
 scikit-learn~=0.22.2

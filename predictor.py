@@ -2,6 +2,7 @@ import tensorflow as tf
 import numpy as np
 from model import build_model
 import dataset
+import twitter
 
 import os
 # turn of gpu acceleration if we don't need it
@@ -26,6 +27,12 @@ def predict(texts):
     data = tf.keras.preprocessing.sequence.pad_sequences(
         sequences, padding='post')
     return np.argmax(model.predict(data, batch_size=128), axis=1)
+
+
+def predict_for_hashtag(hashtag):
+    tweets = twitter.get_tweets(hashtag)
+    tweets['sentiment'] = predict(tweets['text'])
+    return tweets
 
 
 if __name__ == '__main__':
