@@ -1,2 +1,6 @@
 .idea
 /twitter-credentials.json
+
+*venv/
+*.pyc
+.ipynb_checkpoints/
