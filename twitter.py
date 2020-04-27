@@ -3,8 +3,6 @@ import json
 import tweepy
 import preprocessor
 import pandas as pd
-import numpy as np
-from random import choice
 
 
 def _load_credentials() -> dict:
@@ -18,29 +16,27 @@ def _authenticate(cred: dict) -> tweepy.API:
     return tweepy.API(auth)
 
 
-def get_tweets(hashtag: str, count: int, out_file: str = None):
+def get_tweets(hashtag: str, count: int = 0, out_file: str = None):
     api = _authenticate(_load_credentials())
 
     res = []
 
-    for tweet in tweepy.Cursor(api.search, q=hashtag, lang='en',
-                               tweet_mode='extended', count=200).items(count):
+    for tweet in tweepy.Cursor(api.search, q=f'#{hashtag}', lang='pl',
+                               tweet_mode='extended', count=100).items(count):
 
         res.append([
             preprocessor.clean(tweet.full_text),
             tweet.created_at,
-            choice([0, 1, 2])
+            -1
         ])
 
-    return res
+    df = pd.DataFrame(res, columns=['text', 'date', 'sentiment'])
+
+    return df
 
 
-keyword = '#ryanair'
+keyword = 'ryanair'
 
-tweets = get_tweets(keyword, 2500)
+tweets = get_tweets(keyword)
 
-df = pd.DataFrame(tweets, columns=['text', 'date', 'sentiment'])
-
-print(df)
-
-df.to_csv('ryanair.csv', index=False)
+tweets.to_csv(f'{keyword}.csv', index=False)
