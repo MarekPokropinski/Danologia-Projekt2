@@ -1,4 +1,4 @@
-tweet-preprocessor
+git+https://github.com/s/preprocessor.git
 pandas
 tweepy
 numpy~=1.18.3
