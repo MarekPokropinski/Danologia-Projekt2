@@ -16,12 +16,12 @@ def _authenticate(cred: dict) -> tweepy.API:
     return tweepy.API(auth)
 
 
-def get_tweets(hashtag: str, count: int = 0, out_file: str = None):
+def get_tweets(hashtag: str, lang: str, count: int = 0, out_file: str = None):
     api = _authenticate(_load_credentials())
 
     res = []
 
-    for tweet in tweepy.Cursor(api.search, q=f'#{hashtag}', lang='pl',
+    for tweet in tweepy.Cursor(api.search, q=f'#{hashtag}', lang=lang,
                                tweet_mode='extended', count=100).items(count):
 
         res.append([
@@ -35,8 +35,8 @@ def get_tweets(hashtag: str, count: int = 0, out_file: str = None):
     return df
 
 
-keyword = 'ryanair'
+# keyword = 'ryanair'
 
-tweets = get_tweets(keyword)
+# tweets = get_tweets(keyword)
 
-tweets.to_csv(f'{keyword}.csv', index=False)
+# tweets.to_csv(f'{keyword}.csv', index=False)
