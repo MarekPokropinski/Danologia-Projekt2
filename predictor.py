@@ -29,8 +29,8 @@ def predict(texts):
     return np.argmax(model.predict(data, batch_size=128), axis=1)
 
 
-def predict_for_hashtag(hashtag):
-    tweets = twitter.get_tweets(hashtag)
+def predict_for_hashtag(hashtag, lang):
+    tweets = twitter.get_tweets(hashtag, lang)
     tweets['sentiment'] = predict(tweets['text'])
     return tweets
 
