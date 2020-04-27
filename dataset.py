@@ -33,13 +33,25 @@ def load_test():
     return texts, sentiments
 
 
+def sentiments_to_number(sentiments):
+    def to_number(x):
+        if x == 'negative':
+            return 0
+        if x == 'neutral':
+            return 1
+        if x == 'positive':
+            return 2
+    sentiments = [to_number(x) for x in sentiments]
+    return sentiments
+
+
 def getDataset(tokenizer, batch_size=64, test=False):
     def to_number(x):
-        if x == 'neutral':
-            return 0
-        if x == 'positive':
-            return 1
         if x == 'negative':
+            return 0
+        if x == 'neutral':
+            return 1
+        if x == 'positive':
             return 2
 
     if test:
