@@ -1,9 +1,11 @@
 import json
+import os
+
+import tqdm
 
 import tweepy
 import preprocessor
 import pandas as pd
-import os
 
 
 def _load_credentials() -> dict:
@@ -31,14 +33,16 @@ def get_tweets(hashtag: str, lang: str, count: int = 0, out_file: str = None):
 
     res = []
 
-    for tweet in tweepy.Cursor(api.search, q=f'#{hashtag}', lang=lang,
-                               tweet_mode='extended', count=100).items(count):
-
-        res.append([
-            preprocessor.clean(tweet.full_text),
-            tweet.created_at,
-            -1
-        ])
+    try:
+        for tweet in tqdm.tqdm(tweepy.Cursor(api.search, q=f'#{hashtag}', lang=lang,
+                                             tweet_mode='extended', count=100).items(count)):
+            res.append([
+                preprocessor.clean(tweet.full_text),
+                tweet.created_at,
+                -1
+            ])
+    except:
+        pass
 
     df = pd.DataFrame(res, columns=['text', 'date', 'sentiment'])
     df.to_csv(f'cache/{hashtag}.csv')

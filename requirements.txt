@@ -4,3 +4,6 @@ tweepy
 numpy~=1.18.3
 tensorflow>=2.0.0a0
 scikit-learn~=0.22.2
+plotly
+pandas
+nbformat
