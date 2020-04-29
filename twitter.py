@@ -1,4 +1,5 @@
 import json
+import tqdm
 
 import tweepy
 import preprocessor
@@ -7,7 +8,7 @@ import pandas as pd
 
 def _load_credentials() -> dict:
     with open('twitter-credentials.json') as f:
-        return json.load(f)[0]
+        return json.load(f)[1]
 
 
 def _authenticate(cred: dict) -> tweepy.API:
@@ -21,19 +22,20 @@ def get_tweets(hashtag: str, lang: str, count: int = 0, out_file: str = None):
 
     res = []
 
-    for tweet in tweepy.Cursor(api.search, q=f'#{hashtag}', lang=lang,
-                               tweet_mode='extended', count=100).items(count):
-
-        res.append([
-            preprocessor.clean(tweet.full_text),
-            tweet.created_at,
-            -1
-        ])
+    try:
+        for tweet in tqdm.tqdm(tweepy.Cursor(api.search, q=f'#{hashtag}', lang=lang,
+                                             tweet_mode='extended', count=100).items(count)):
+            res.append([
+                preprocessor.clean(tweet.full_text),
+                tweet.created_at,
+                -1
+            ])
+    except:
+        pass
 
     df = pd.DataFrame(res, columns=['text', 'date', 'sentiment'])
 
     return df
-
 
 # keyword = 'ryanair'
 
